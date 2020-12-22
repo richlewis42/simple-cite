@@ -6,15 +6,15 @@ export default class Processor {
   citations = []
   noCites = []
 
-  constructor({ items, style, locale, format = 'text' }) {
+  constructor({ items, style, locale, format = 'text', sys = {} }) {
     const itemLookup = {}
     items.forEach(item => (itemLookup[item.id] = item))
-    const sys = {
+    const theSys = Object.assign({
       retrieveItem: item => itemLookup[item],
       retrieveLocale: () => locale
-    }
+    }, sys)
 
-    this.engine = new citeproc.Engine(sys, style)
+    this.engine = new citeproc.Engine(theSys, style)
     this.engine.opt.development_extensions.wrap_url_and_doi = true
     this.format = format
   }
